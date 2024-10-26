@@ -22,10 +22,8 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local plugins = {
 
--- Setup lazy.nvim
-require("lazy").setup({
-  spec = {
         {
           "polirritmico/monokai-nightasty.nvim",
           lazy = false,
@@ -53,12 +51,27 @@ require("lazy").setup({
             -- or                              , branch = '0.1.x',
           dependencies = { 'nvim-lua/plenary.nvim' }
         },
+        {
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v3.x",
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+          "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+          "MunifTanjim/nui.nvim",
+          -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+        }
+    },
 	-- Configure any other settings here. See the documentation for more details.
       checker = { enabled = true },
-      }
+
+}
+-- Setup lazy.nvim
+require("lazy").setup({
+  spec = plugins
 })
 
 local builtin = require("telescope.builtin")
 
 vim.keymap.set('n', '<C-P>', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<C-n>', ':Neotree filesystem reveal left toggle<CR>', {})
